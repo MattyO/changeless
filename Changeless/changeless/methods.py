@@ -32,7 +32,7 @@ def _convert_list_of_fancy_hashes(a_list):
 def to_dict(obj):
     new_dict = {}
     for key, value in obj.__dict__.items():
-        if isinstance(value, BaseImmutable) or isinstance(value, BaseFancy) :
+        if isinstance(value, BaseFancy) :
             new_dict[key] = convert_immutables(value)
         elif isinstance(value, list):
             new_dict[key] = _convert_list_of_fancy_hashes(value)

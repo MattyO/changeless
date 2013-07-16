@@ -1,20 +1,38 @@
+from django.db.models.fields.related import ForeignKey, ManyToManyField
+
+def convert_list_to(the_list, base_type):
+    return [ base_type.__class__(an_item) for an_item in the_list ]
+
 def dict_to_base_type(a_dict, base_type):
     converted_dict = {}
+    print a_dict.items()
     for key, value in a_dict.items():
         if isinstance(value, dict):
-            converted_dict[key] = base_type(value)
+            converted_dict[key] = base_type.__class__(value)
         elif isinstance(value, list):
-            converted_dict[key] = convert_list_of_dict(value, base_type)
+            converted_dict[key] = convert_list_to(value, base_type)
         else:
             converted_dict[key] = value
 
     return converted_dict 
 
-def list_of_dict_to_base_type(the_list_of_dicts, base_type):
-    return [ base_type(an_item) for an_item in the_list_of_dicts ]
+#def dict_to_base_type(a_dict, base_type):
+#    converted_dict = {}
+#    for key, value in a_dict.items():
+#        if isinstance(value, dict):
+#            converted_dict[key] = base_type(value)
+#        elif isinstance(value, list):
+#            converted_dict[key] = convert_list_to(value, base_type)
+#        else:
+#            converted_dict[key] = value
+#
+#    return converted_dict 
+
 
 def model_to_dict(django_model, depth=1):
+
     temp_dict = {}
+
     for field in django_model._meta.local_fields:
         field_value = getattr(django_model, field.name)
 

@@ -1,6 +1,6 @@
 from conversion_helpers import model_to_dict, dict_to_base_type
 
-class BaseFancy():
+class BaseFancy(object):
     def __init__(self, a_dict):
         self.__dict__ = dict_to_base_type(a_dict, self)
 
@@ -18,8 +18,12 @@ class FancyHash(BaseFancy):
     pass
 
 class FancyModel(BaseFancy):
-    def __init__(self, django_model, depth=1):
-        super().__init__(model_to_dict(django_model, depth))
-
-
-
+    pass
+    #def __init__(self, a_dict):
+    #    self.__dict__ = dict_to_base_type(a_dict, self)
+    #def __init__(self, convert_object):
+    #    super(FancyModel, self).__init__(convert_object)
+    #    temp_dict = model_to_dict(django_model, depth)
+    #    base_type_dict = dict_to_base_type(temp_dict, FanyModel)
+    #    print base_type_dict
+    #    self.__dict__ = base_type_dict
