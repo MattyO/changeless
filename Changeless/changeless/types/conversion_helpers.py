@@ -5,7 +5,6 @@ def convert_list_to(the_list, base_type):
 
 def dict_to_base_type(a_dict, base_type):
     converted_dict = {}
-    print a_dict.items()
     for key, value in a_dict.items():
         if isinstance(value, dict):
             converted_dict[key] = base_type.__class__(value)

@@ -12,7 +12,6 @@ from changeless.tests.decorators import reset_db
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
-print "loading testing fill"
 from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.contrib.auth.models import User
 from django.test.simple import DjangoTestSuiteRunner
@@ -38,9 +37,6 @@ class TestFancy(unittest.TestCase):
     #@reset_db
     def test_fancy_model_is_fancy_type(self):
         obj_model = User.objects.get(username="me")
-
-        print "username in fancy check"
-        print obj_model.username
 
         obj = types.create_fancy_model(obj_model)
 
@@ -75,17 +71,32 @@ class TestFancy(unittest.TestCase):
         self.assertEqual(fancy_model.email, "me@aol.com")
 
     def test_fancy_model_finds_basic_relationship(self):
-        print "starting to test basic relationship"
-
         fancy_model = types.create_fancy_model(Book.objects.get(title="A Tale of Two Cities"))
-
-        #print fancy_model.author
 
         self.assertEqual(fancy_model.author.username, "john")
         self.assertEqual(fancy_model.author.email, "lennon@thebeatles.com")
-        print "dont testing basic relationship"
 
 
+    def test_fancy_model_default_is_one_relationship_level_deep(self):
+        fancy_model = types.create_fancy_model(Book.objects.get(title="A Tale of Two Cities"))
+
+        with self.assertRaises(AttributeError):
+            address = fancy_model.location.address
+
+    def test_fancy_model_level_two_attributes(self):
+        fancy_model = types.create_fancy_model(Book.objects.get(title="A Tale of Two Cities"), depth=2)
+
+        self.assertEqual(fancy_model.location.address.street_address, "THE place")
+
+    def test_fancy_model_many_to_many_relationships_is_list(self):
+        fancy_model = types.create_fancy_model(Book.objects.get(title="A Tale of Two Cities"))
+
+        self.assertIsInstance(fancy_model.readers, list)
+
+    def test_fancy_model_many_to_many_relationships_is_list_with_correct_readers(self):
+        fancy_model = types.create_fancy_model(Book.objects.get(title="A Tale of Two Cities"))
+
+        self.assertEqual(len(fancy_model.readers), 2)
 
 class TestImmutable(unittest.TestCase):
 

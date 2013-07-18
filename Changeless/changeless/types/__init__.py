@@ -5,7 +5,6 @@ from conversion_helpers import model_to_dict, dict_to_base_type
 def create_fancy_model(django_model, depth=1):
     temp_dict = model_to_dict(django_model, depth)
     base_type_dict = dict_to_base_type(temp_dict, FancyModel)
-    print base_type_dict
     return FancyModel(temp_dict )
 
 def create_immutable_model(django_model, depth=1):
