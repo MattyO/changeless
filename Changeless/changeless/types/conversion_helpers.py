@@ -1,7 +1,15 @@
 from django.db.models.fields.related import ForeignKey, ManyToManyField
 
+def base_converter(base_type, a_dict):
+    return base_type.__class__(a_dict)
+
+def model_converter(base_type, a_model, depth=1):
+    temp_dict = model_to_dict(a_model, depth)
+    return base_type.__class__(temp_dict)
+
 def convert_list_to(the_list, base_type):
     return [ base_type.__class__(an_item) for an_item in the_list ]
+
 
 def dict_to_base_type(a_dict, base_type):
     converted_dict = {}

@@ -1,4 +1,4 @@
-from fancy import BaseFancy
+from fancy import BaseFancy, FancyModel
 from conversion_helpers import model_to_dict
 
 class BaseImmutable(BaseFancy):
@@ -9,8 +9,11 @@ class BaseImmutable(BaseFancy):
 class ImmutableHash(BaseImmutable):
     pass
 
-class ImmutableModel(BaseImmutable):
-    pass
+class ImmutableModel(FancyModel):
+
+    def __setattr__(self, name, value):
+        if name != "__dict__":
+            raise Exception("Immutable Object can not be changed")
     #def __init__(self, converted_object):
     #    super(ImmutableModel, self).__init__(converted_object)
         #self.__dict__ = converted_object

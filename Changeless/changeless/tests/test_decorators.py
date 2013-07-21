@@ -26,9 +26,9 @@ class TestDecorators(unittest.TestCase):
 
         fancy_book_list = get_books()
 
-        self.assertIsInstance(fancy_book_list. list)
+        self.assertIsInstance(fancy_book_list, list)
         self.assertEqual(len(fancy_book_list) , 3)
-        self.assertIsInstance(fancy_book_list[0]. FancyModel)
+        self.assertIsInstance(fancy_book_list[0], FancyModel)
 
     def test_fancy_list_object_gets_attributes(self):
         @fancy_list
@@ -38,4 +38,23 @@ class TestDecorators(unittest.TestCase):
         fancy_book_list = get_cities()
         self.assertEqual(fancy_book_list[0].title , "A Tale of Two Cities")
 
+    def test_immutable_list_returns_correct_types(self):
+        @immutable_list
+        def get_books():
+            return Book.objects.all()
+
+        immutable_book_list = get_books()
+
+        self.assertIsInstance(immutable_book_list, list)
+        self.assertEqual(len(immutable_book_list ) , 3)
+        self.assertIsInstance(immutable_book_list[0], ImmutableModel)
+
+    def test_immutable_list_object_gets_attributes(self):
+        @immutable_list
+        def get_cities():
+            return Book.objects.filter(title="A Tale of Two Cities")
+
+        fancy_book_list = get_cities()
+
+        self.assertEqual(fancy_book_list[0].title , "A Tale of Two Cities")
 

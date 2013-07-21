@@ -12,6 +12,7 @@ from changeless.tests.decorators import reset_db
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
+print "loading testing fill"
 from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.contrib.auth.models import User
 from django.test.simple import DjangoTestSuiteRunner
@@ -37,6 +38,9 @@ class TestFancy(unittest.TestCase):
     #@reset_db
     def test_fancy_model_is_fancy_type(self):
         obj_model = User.objects.get(username="me")
+
+        print "username in fancy check"
+        print obj_model.username
 
         obj = types.create_fancy_model(obj_model)
 
@@ -129,6 +133,12 @@ class TestImmutable(unittest.TestCase):
         obj = types.create_immutable_model(obj_model)
 
         self.assertIsInstance(obj, ImmutableModel)
+
+    def test_immutable_model_base_attributes_are_properites(self):
+        fancy_model = ImmutableModel(User.objects.get(username="me"))
+
+        self.assertEqual(fancy_model.username, "me")
+        self.assertEqual(fancy_model.email, "me@aol.com")
 
 
 
