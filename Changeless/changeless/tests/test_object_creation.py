@@ -34,7 +34,6 @@ class TestFancy(unittest.TestCase):
         self.assertIsInstance(obj, BaseFancy)
         self.assertIsInstance(obj, FancyHash)
 
-
     #@reset_db
     def test_fancy_model_is_fancy_type(self):
         obj_model = User.objects.get(username="me")
@@ -139,6 +138,34 @@ class TestImmutable(unittest.TestCase):
 
         self.assertEqual(fancy_model.username, "me")
         self.assertEqual(fancy_model.email, "me@aol.com")
+
+    def test_immutable_model_finds_basic_relationship(self):
+        fancy_model = ImmutableModel(Book.objects.get(title="A Tale of Two Cities"))
+
+        self.assertEqual(fancy_model.author.username, "john")
+        self.assertEqual(fancy_model.author.email, "lennon@thebeatles.com")
+
+
+    def test_immutable_model_default_is_one_relationship_level_deep(self):
+        fancy_model = ImmutableModel(Book.objects.get(title="A Tale of Two Cities"))
+
+        with self.assertRaises(AttributeError):
+            address = fancy_model.location.address
+
+    def test_immutable_model_level_two_attributes(self):
+        fancy_model = ImmutableModel(Book.objects.get(title="A Tale of Two Cities"), depth=2)
+
+        self.assertEqual(fancy_model.location.address.street_address, "THE place")
+
+    def test_immutable_model_many_to_many_relationships_is_list(self):
+        fancy_model = ImmutableModel(Book.objects.get(title="A Tale of Two Cities"))
+
+        self.assertIsInstance(fancy_model.readers, list)
+
+    def test_immutable_model_many_to_many_relationships_is_list_with_correct_readers(self):
+        immutable_model = ImmutableModel(Book.objects.get(title="A Tale of Two Cities"))
+
+        self.assertEqual(len(immutable_model .readers), 2)
 
 
 

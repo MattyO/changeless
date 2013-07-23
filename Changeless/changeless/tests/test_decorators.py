@@ -54,7 +54,7 @@ class TestDecorators(unittest.TestCase):
         def get_cities():
             return Book.objects.filter(title="A Tale of Two Cities")
 
-        fancy_book_list = get_cities()
+        immutable_book_list = get_cities()
 
-        self.assertEqual(fancy_book_list[0].title , "A Tale of Two Cities")
+        self.assertEqual(immutable_book_list[0].title , "A Tale of Two Cities")
 
