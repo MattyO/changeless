@@ -1,5 +1,5 @@
 from types.immutable import ImmutableModel
-from types.fancy import FancyHash
+from types.fancy import FancyHash, BaseFancy
 
 '''return dictonary object of object given keys minus ignore keys'''
 def _sub_dict(object, keys, ignore=[]):
@@ -25,7 +25,7 @@ def _r_sub_dict(object, second_obj):
 def _convert_list_of_fancy_hashes(a_list):
     r_immutable_list = []
     for immutable_obj in a_list:
-        r_immutable_list.append(convert_immutables(immutable_obj))
+        r_immutable_list.append(to_dict(immutable_obj))
     return r_immutable_list
 
 '''convert all nested immutables into dict.  use im comparison, or kept public for you in cases of pretty printing'''
@@ -33,7 +33,7 @@ def to_dict(obj):
     new_dict = {}
     for key, value in obj.__dict__.items():
         if isinstance(value, BaseFancy) :
-            new_dict[key] = convert_immutables(value)
+            new_dict[key] = to_dict(value)
         elif isinstance(value, list):
             new_dict[key] = _convert_list_of_fancy_hashes(value)
         else:
