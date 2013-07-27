@@ -41,12 +41,3 @@ def to_dict(obj):
 
     return new_dict
 
-'''merges object's dict with one given.   cheaters way out of funcational style'''
-'''only works on first level of keys should change'''
-def change(obj, new_dict):
-    temp_dict = obj.__dict__
-    for key,value in new_dict.items():
-        temp_dict[key] = value
-
-    return create(temp_dict)
-
