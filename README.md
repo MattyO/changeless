@@ -1,15 +1,25 @@
-Changeless is a set of helpful functions and objects to help convert your data into a set stateless and / immutable data objects.
+Changeless is a set of functions and objects to help convert your data into a set stateless or immutable data objects.
 
 Types
 -----
     from changeless.types import FancyHash, FancyModel, ImmutableHash, ImmutableModel
 
-Fancy Types mearly takes a dict object and replaces the dereferencing operator ([]) with the dot operator
-Model Types take a django orm QueueSet and converts to a comperable api.  This uses a Fancy types as a base after converting the QuerySet to a dict.  foreign key and many to many relationships are converted to nested dicts and lists of dicts so getting the models and orm objects operate in very simmular ways.  
+Fancy Types take a dict object and replaces the dereferencing operator ([]) with the dot operator.  So the object
+
+     an_obj= FancyHash({"name":"me"}) 
+
+will allow us to retrieve the attribute 'name' with
+
+    print "the object's name: " + an_obj.name
+    >the object's name: matt
+
+ 
+Model Types take a Django ORM QueueSet and converts it to a comparable api.  This uses the Fancy type as a base after converting the QuerySet to a dict.  Foreign keys and many to many relationships are converted to nested dicts and lists of dicts(respectively) to aid in the objects behaving as similarly as possible.  
+
+Note that Model Types retrieve all of data at once which includes by default relationships directly adjacent.  This might incur more queries than expected.  Choose your data carefully and scale back when necessary. 
 
 *FancyHash(a_dictonary)
 *FancyModel(a_model, depth=1)
-
 *ImmutableHash(a_dictonary)
 *ImmutableModel(a_model, depth=1)
 
@@ -24,14 +34,15 @@ Decorators
     def get_books():
         return Book.objects.all()
 
-Place the following decorators on funcations that return a django orm QueueSet to convert it to the correct data object.  Decorators are the prefered way to use the changeless library.  Using the decorators premote readabilty by keeping the conversion away from orm call as well as providing an easy to way to turn the changeless conversion on and off.  
-The following are the gernators that are avalible.  
-*fancy_list
-*fancy_gen
-*immutable_list
-*immutable_gen
+Place the following decorators before functions that return a Django ORM QueueSet to convert it to the correct changeless object.  Decorators are the preferred way to use the changeless library.  Using the decorators promote readability by keeping the conversion away from the ORM call, as well as providing an easy to way to turn the changeless conversion on and off.  Notice that the _gen decorators will return a generator that will lazily convert each object in the list.  Generators may be more efficient for long lists.
 
-Funcations
+The following generators are available.  
+* fancy_list
+* fancy_gen
+* immutable_list
+* immutable_gen
+
+Functions
 ----------
 I've found the following functions useful.
 ###fuzzyEquals###
@@ -46,9 +57,9 @@ I've found the following functions useful.
          i_obj,
          second_i_obj ))
 
-fuzzyEquals will find if the attributes that the models have in common are equal.  This also inspects nested relationships for shared attributes.
+fuzzyEquals will find attributes that the changeless objects have in common and compare only that union.  This also inspects nested relationships for shared attributes.
 ###to_dict###
     from changeless.methods import to_dict
-to_dict is the reverse conversion from a base fancy_object to its dictonary representation.
+to_dict is the reverse conversion from a base fancy_object to its dictionary representation.
 
 
