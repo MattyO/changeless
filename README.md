@@ -18,10 +18,10 @@ Model Types take a Django ORM QueueSet and converts it to a comparable api.  Thi
 
 Note that Model Types retrieve all of data at once which includes by default relationships directly adjacent.  This might incur more queries than expected.  Choose your data carefully and scale back when necessary. 
 
-*FancyHash(a_dictonary)
-*FancyModel(a_model, depth=1)
-*ImmutableHash(a_dictonary)
-*ImmutableModel(a_model, depth=1)
+* FancyHash(a_dictonary)
+* FancyModel(a_model, depth=1)
+* ImmutableHash(a_dictonary)
+* ImmutableModel(a_model, depth=1)
 
 Just pass the correct object into the type constructor to convert your data.
 
