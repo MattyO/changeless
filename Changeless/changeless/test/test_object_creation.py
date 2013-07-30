@@ -8,7 +8,7 @@ from changeless.types.fancy import BaseFancy
 import changeless.types as types
 
 '''for django model conversion testing'''
-from changeless.tests.decorators import reset_db
+from changeless.test.decorators import reset_db
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
@@ -17,7 +17,7 @@ from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.contrib.auth.models import User
 from django.test.simple import DjangoTestSuiteRunner
 
-from changeless.tests.myapp.models import Library, Book, Address
+from changeless.test.myapp.models import Library, Book, Address
 
 from test_helpers import load_fixtures
 

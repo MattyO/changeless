@@ -10,7 +10,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from test_helpers import load_fixtures
 from django.test.simple import DjangoTestSuiteRunner
 
-from changeless.tests.myapp.models import Library, Book, Address
+from changeless.test.myapp.models import Library, Book, Address
 
 class TestDecorators(unittest.TestCase):
     @classmethod

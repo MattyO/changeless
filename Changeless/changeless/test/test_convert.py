@@ -2,7 +2,7 @@ import unittest
 from changeless.types.conversion_helpers import model_to_dict
 from django.test.simple import DjangoTestSuiteRunner
 from test_helpers import load_fixtures
-from changeless.tests.myapp.models import Library, Book, Address
+from changeless.test.myapp.models import Library, Book, Address
 import pprint
 
 class TestConverters(unittest.TestCase):

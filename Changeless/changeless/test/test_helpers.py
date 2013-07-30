@@ -5,7 +5,7 @@ from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.contrib.auth.models import User
 from django.test.simple import DjangoTestSuiteRunner
 
-from changeless.tests.myapp.models import Library, Book, Address
+from changeless.test.myapp.models import Library, Book, Address
 
 def load_fixtures():
     the_place_to_be = Address.objects.create(street_address="THE place")
