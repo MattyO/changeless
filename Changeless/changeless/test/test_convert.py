@@ -1,22 +1,38 @@
 import unittest
-from changeless.types.conversion_helpers import model_to_dict
-from django.test.simple import DjangoTestSuiteRunner
-from test_helpers import load_fixtures
-from changeless.test.myapp.models import Library, Book, Address
-import pprint
+from changeless.types import FancyHash
+from changeless.methods import to_json, to_dict
+import json
 
 class TestConverters(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        test_runner = DjangoTestSuiteRunner(interactive=False, verbosity=1)
-        test_db = test_runner.setup_databases()
-        load_fixtures()
 
-    #def test_model_to_dict(self):
-    #    pp = pprint.PrettyPrinter(indent=4)
-    #    model_dict = model_to_dict(Book.objects.get(title="A Tale of Two Cities"))
+    def test_to_dict(self):
+        test_object = FancyHash({"name":"test_name"})
+        back_to_dict = to_dict(test_object)
 
-    #    pp.pprint(model_dict)
+        self.assertEqual( back_to_dict['name'], "test_name")
 
-    #    self.assertTrue(False)
+    def test_to_json(self):
+        test_object = FancyHash({"name":"test_name"})
+        test_json = to_json(test_object) 
+        back_to_dict = json.loads(test_json)
+
+
+        self.assertEqual( back_to_dict['name'], "test_name")
+
+    def test_to_json_with_nested_attribute(self):
+        test_object = FancyHash({"name":"test_name", "attribute":{"attr":"test_attr"}})
+        test_json = to_json(test_object) 
+        back_to_dict = json.loads(test_json)
+
+
+        self.assertEqual( back_to_dict['attribute']['attr'], "test_attr")
+
+
+    def test_to_json_with_nested_dict(self):
+        test_object = FancyHash({"name":"test_name", "attribute":{"attr":"test_attr"}})
+        test_json = to_json(test_object) 
+        back_to_dict = json.loads(test_json)
+
+        self.assertEqual( back_to_dict['attribute']['attr'], "test_attr")
+
 

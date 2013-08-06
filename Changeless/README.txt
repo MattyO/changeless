@@ -2,19 +2,25 @@ Changeless is a set of functions and objects to help convert your data
 into a set stateless or immutable data objects.
 
 Types
-=====
+-----
 
-> from changeless.types import FancyHash, FancyModel, ImmutableHash,
-> ImmutableModel
+::
+
+    from changeless.types import FancyHash, FancyModel, ImmutableHash, ImmutableModel
 
 Fancy Types take a dict object and replaces the dereferencing operator
 ([]) with the dot operator. So the object
 
-> an\_obj= FancyHash({"name":"me"})
+::
+
+     an_obj= FancyHash({"name":"me"}) 
 
 will allow us to retrieve the attribute 'name' with
 
-> print "the object's name: " + an\_obj.name \>the object's name: matt
+::
+
+    print "the object's name: " + an_obj.name
+    >the object's name: matt
 
 Model Types take a Django ORM QueueSet and converts it to a comparable
 api. This uses the Fancy type as a base after converting the QuerySet to
@@ -26,20 +32,24 @@ Note that Model Types retrieve all of data at once which includes by
 default relationships directly adjacent. This might incur more queries
 than expected. Choose your data carefully and scale back when necessary.
 
--   FancyHash(a\_dictonary)
--   FancyModel(a\_model, depth=1)
--   ImmutableHash(a\_dictonary)
--   ImmutableModel(a\_model, depth=1)
+-  FancyHash(a\_dictonary)
+-  FancyModel(a\_model, depth=1)
+-  ImmutableHash(a\_dictonary)
+-  ImmutableModel(a\_model, depth=1)
 
 Just pass the correct object into the type constructor to convert your
 data.
 
 Decorators
-==========
+----------
 
-> from changeless.decorators import fancy\_list
->
-> @fancy\_list def get\_books(): return Book.objects.all()
+::
+
+    from changeless.decorators import fancy_list
+
+    @fancy_list
+    def get_books():
+        return Book.objects.all()
 
 Place the following decorators before functions that return a Django ORM
 QueueSet to convert it to the correct changeless object. Decorators are
@@ -50,28 +60,28 @@ and off. Notice that the \_gen decorators will return a generator that
 will lazily convert each object in the list. Generators may be more
 efficient for long lists.
 
-The following generators are available. \* fancy\_list \* fancy\_gen \*
-immutable\_list \* immutable\_gen
+| The following generators are available.
+| \* fancy\_list \* fancy\_gen \* immutable\_list \* immutable\_gen
 
 Functions
-=========
+---------
 
-I've found the following functions useful. \#\#\#fuzzyEquals\#\#\# from
+I've found the following functions useful. ###fuzzyEquals### from
 changeless.compare import fuzzyEquals
 
-> i\_obj = FancyHash({"name":'test name',
-> :   'sub\_dict':{'name':'sub name', 'attrib':'sub attr value'}
->
-> > })
->
-> second\_i\_obj = FancyHash({"name":'test name',
-> :   'sub\_dict':{'name':'sub name', 'attrib':'sub attr value' }})
->
-> self.assertTrue( fuzzyEquals(
-> :   i\_obj, second\_i\_obj ))
->
+::
+
+    i_obj = FancyHash({"name":'test name', 
+                       'sub_dict':{'name':'sub name', 'attrib':'sub attr value'}
+                      })
+    second_i_obj = FancyHash({"name":'test name', 
+                              'sub_dict':{'name':'sub name', 'attrib':'sub attr value' }})
+    self.assertTrue( fuzzyEquals(
+         i_obj,
+         second_i_obj ))
+
 fuzzyEquals will find attributes that the changeless objects have in
 common and compare only that union. This also inspects nested
-relationships for shared attributes. \#\#\#to\_dict\#\#\# from
+relationships for shared attributes. ###to\_dict### from
 changeless.methods import to\_dict to\_dict is the reverse conversion
 from a base fancy\_object to its dictionary representation.

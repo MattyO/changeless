@@ -1,5 +1,6 @@
 from types.immutable import ImmutableModel
 from types.fancy import FancyHash, BaseFancy
+import json
 
 '''return dictonary object of object given keys minus ignore keys'''
 def _sub_dict(object, keys, ignore=[]):
@@ -41,3 +42,6 @@ def to_dict(obj):
 
     return new_dict
 
+
+def to_json(obj):
+    return json.dumps(to_dict(obj))
