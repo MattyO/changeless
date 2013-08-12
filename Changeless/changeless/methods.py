@@ -1,6 +1,7 @@
 from types.immutable import ImmutableModel
 from types.fancy import FancyHash, BaseFancy
 import json
+import datetime
 
 '''return dictonary object of object given keys minus ignore keys'''
 def _sub_dict(object, keys, ignore=[]):
@@ -44,4 +45,22 @@ def to_dict(obj):
 
 
 def to_json(obj):
-    return json.dumps(to_dict(obj))
+    jsonable = None
+
+    if isinstance(obj, list):
+        jsonable = [ _datetimes_to_string(to_dict(changless_obj)) for changless_obj in obj ]
+    else: 
+        jsonable = _datetimes_to_string(to_dict(obj))
+
+    return json.dumps(jsonable)
+
+def _datetimes_to_string(obj):
+    converted = obj
+    for key, value in obj.items():
+        if isinstance(value, dict):
+            converted[key] = _datetimes_to_string(value)
+        elif isinstance(value, datetime.datetime):
+            converted[key] = value.isoformat()
+            
+    return converted 
+
