@@ -7,7 +7,6 @@ def fancy_list(*args, **kwargs):
 
     def wrapped(db_function):
         def create_fancy():
-            print "depth is " + str(depth)
             return lambda: [ FancyModel(db_entry, depth) for db_entry in db_function() ]
         return create_fancy()
 
