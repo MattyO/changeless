@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='changeless',
-    version='0.1.22',
+    version='0.1.24',
     author='Matt ODonnell',
     author_email='odonnell004@gmail.com',
     packages=['changeless', 'changeless.test', 'changeless.types'],
