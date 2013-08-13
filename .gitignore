@@ -38,3 +38,4 @@ env/
 mysqlitedb
 fileinfo
 MANIFEST
+test_log.txt
