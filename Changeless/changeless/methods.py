@@ -1,7 +1,16 @@
-from types.immutable import ImmutableModel
-from types.fancy import FancyHash, BaseFancy
+from changeless.types.immutable import ImmutableModel
+from changeless.types.fancy import FancyHash, BaseFancy
+from changeless.decorators import fancy_gen
 import json
 import datetime
+import logging
+
+def _generatorType():
+    @fancy_gen
+    def generator_type_function():
+        pass
+    generator_obj = generator_type_function()
+    return type(generator_obj)
 
 '''return dictonary object of object given keys minus ignore keys'''
 def _sub_dict(object, keys, ignore=[]):
@@ -33,13 +42,17 @@ def _convert_list_of_fancy_hashes(a_list):
 '''convert all nested immutables into dict.  use im comparison, or kept public for you in cases of pretty printing'''
 def to_dict(obj):
     new_dict = {}
-    for key, value in obj.__dict__.items():
-        if isinstance(value, BaseFancy) :
-            new_dict[key] = to_dict(value)
-        elif isinstance(value, list):
-            new_dict[key] = _convert_list_of_fancy_hashes(value)
-        else:
-            new_dict[key] = value
+    if isinstance(obj, list) or isinstance(obj, _generatorType()):
+        return [ to_dict(dict_obj) for dict_obj in obj ]
+    else: 
+        for key, value in obj.__dict__.items():
+            #logging.debug( type(value)  )
+            if isinstance(value, BaseFancy) :
+                new_dict[key] = to_dict(value)
+            elif isinstance(value, list) or type(value) =='generator':
+                new_dict[key] = _convert_list_of_fancy_hashes(value)
+            else:
+                new_dict[key] = value
 
     return new_dict
 
@@ -59,6 +72,9 @@ def _datetimes_to_string(obj):
     for key, value in obj.items():
         if isinstance(value, dict):
             converted[key] = _datetimes_to_string(value)
+        elif isinstance(value, list) or isinstance(value, generatorType()):
+            converted[key] = [ _datetimes_to_string(dict_obj) for dict_obj in value ]
+
         elif isinstance(value, datetime.datetime):
             converted[key] = value.isoformat()
             
