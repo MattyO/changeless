@@ -94,3 +94,13 @@ class TestConverters(unittest.TestCase):
         list_of_books_dicts = to_dict(book_gen)
         self.assertEqual(list_of_books_dicts[0]['title'], "A Tale of Two Cities")
 
+    def test_to_json_should_convert_generator(self):
+        @fancy_gen
+        def get_all_books():
+            return Book.objects.filter(title="A Tale of Two Cities")
+
+        book_gen = get_all_books()
+        test_json = to_json(book_gen) 
+        back_to_dict = json.loads(test_json)
+        self.assertEqual(back_to_dict[0]['title'], "A Tale of Two Cities")
+

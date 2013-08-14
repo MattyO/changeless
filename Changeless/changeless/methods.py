@@ -62,7 +62,7 @@ def to_dict(obj):
 def to_json(obj):
     jsonable = None
 
-    if isinstance(obj, list):
+    if isinstance(obj, list) or isinstance(obj, GeneratorType):
         jsonable = [ _datetimes_to_string(to_dict(changless_obj)) for changless_obj in obj ]
     else: 
         jsonable = _datetimes_to_string(to_dict(obj))
