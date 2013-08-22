@@ -25,7 +25,11 @@ Note that Model Types retrieve all of data at once which includes by default rel
 
 Just pass the correct object into the type constructor to convert your data.
 ###FancyHash###
-    fancy_object = FancyHash({"a_key":"a_value", "a_relationship":{"a_attribute":"attribute_value"}, "relationship_list:[{"name:"name_1", "attr_1":"value2"}, {"name:"name_2", "attr_1":"value3"}]})
+    fancy_object = FancyHash({
+	    "a_key":"a_value", 
+	    "a_relationship":{"a_attribute":"attribute_value"}, 
+	    "relationship_list:[{"name:"name_1", "attr_1":"value2"}, {"name:"name_2", "attr_1":"value3"}]
+	    })
     fancy_object.a_key
     > a_value
     fancy_object.a_relationship.a_attribute
