@@ -30,13 +30,15 @@ Just pass the correct object into the type constructor to convert your data.
 	    "a_relationship":{"a_attribute":"attribute_value"}, 
 	    "relationship_list:[{"name:"name_1", "attr_1":"value2"}, {"name:"name_2", "attr_1":"value3"}]
 	    })
+
     fancy_object.a_key
     > a_value
+
     fancy_object.a_relationship.a_attribute
     >attribute_value
+
     for a_thing in fancy_object.relationship_list:
         a_thing.name
-
     >name_1
     >name_2
 
