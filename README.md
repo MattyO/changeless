@@ -24,6 +24,37 @@ Note that Model Types retrieve all of data at once which includes by default rel
 * ImmutableModel(a_model, depth=1)
 
 Just pass the correct object into the type constructor to convert your data.
+###FancyHash###
+    fancy_object = FancyHash({"a_key":"a_value", "a_relationship":{"a_attribute":"attribute_value"}, "relationship_list:[{"name:"name_1", "attr_1":"value2"}, {"name:"name_2", "attr_1":"value3"}]})
+    fancy_object.a_key
+    > a_value
+    fancy_object.a_relationship.a_attribute
+    >attribute_value
+    for a_thing in fancy_object.relationship_list:
+        a_thing.name
+
+    >name_1
+    >name_2
+
+
+###FancyModel###
+    from django.db import models
+
+    class Poll(models.Model):
+        question = models.CharField(max_length=200)
+        pub_date = models.DateTimeField('date published')
+
+    class Choice(models.Model):
+        poll = models.ForeignKey(Poll)
+        choice_text = models.CharField(max_length=200)
+        votes = models.IntegerField(default=0)
+
+    fancy_choice  = FancyModel(Choice.objects.get(pk=1))
+    fancy_choice.votes
+    >2
+    fancy_choice.poll.question
+    >"how great is this?"
+
 
 
 Decorators
@@ -31,8 +62,15 @@ Decorators
     from changeless.decorators import fancy_list
 
     @fancy_list
-    def get_books():
-        return Book.objects.all()
+    def get_choices():
+        return Choice.objects.all()
+
+    for choice in get_choices():
+        print choice.choice_text
+
+    >"Kind of great"
+    >"Sort of great"
+    >"Really great"
 
 Place the following decorators before functions that return a Django ORM QueueSet to convert it to the correct changeless object.  Decorators are the preferred way to use the changeless library.  Using the decorators promote readability by keeping the conversion away from the ORM call, as well as providing an easy to way to turn the changeless conversion on and off.  Notice that the _gen decorators will return a generator that will lazily convert each object in the list.  Generators may be more efficient for long lists.
 
@@ -60,6 +98,6 @@ I've found the following functions useful.
 fuzzyEquals will find attributes that the changeless objects have in common and compare only that union.  This also inspects nested relationships for shared attributes.
 ###to_dict###
     from changeless.methods import to_dict
-to_dict is the reverse conversion from a base fancy_object to its dictionary representation.
+to_dict is the reverse conversion from a base fancy_object to its dictionary representation.  attributes become keys, relationships become nested dictonaries, many to many relationships become list with dicts
 
 
