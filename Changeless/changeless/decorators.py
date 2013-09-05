@@ -7,8 +7,8 @@ def fancy_list(*args, **kwargs):
 
     def wrapped(db_function):
         def create_fancy():
-            return lambda: [ FancyModel(db_entry, depth) for db_entry in db_function() ]
-        return create_fancy()
+            return [ FancyModel(db_entry, depth) for db_entry in db_function() ]
+        return create_fancy
 
     if len(args) == 1 and callable(args[0]):
         return wrapped(args[0])
@@ -22,9 +22,9 @@ def immutable_list(*args, **kwargs):
 
     def wrapped(db_function):
         def create_immutable():
-            return lambda: [ ImmutableModel(db_entry, depth) for db_entry in db_function() ]
+            return [ ImmutableModel(db_entry, depth) for db_entry in db_function() ]
 
-        return create_immutable()
+        return create_immutable
 
     if len(args) == 1 and callable(args[0]):
         return wrapped(args[0])
@@ -39,8 +39,8 @@ def fancy_gen(*args, **kwargs):
     def wrapped(db_function):
 
         def create_fancy():
-            return lambda: _fancy_gen( db_function(), depth )
-        return create_fancy()
+            return _fancy_gen( db_function(), depth )
+        return create_fancy
 
     if len(args) == 1 and callable(args[0]):
         return wrapped(args[0])
@@ -55,9 +55,9 @@ def immutable_gen(*args, **kwargs):
 
     def wrapped(db_function):
         def create_immutable():
-            return lambda: _immutable_gen( db_function(), depth )
+            return _immutable_gen( db_function(), depth )
 
-        return create_immutable()
+        return create_immutable
 
     if len(args) == 1 and callable(args[0]):
         return wrapped(args[0])
