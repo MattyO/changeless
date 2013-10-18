@@ -3,6 +3,8 @@ from django.db.models.fields.related import ForeignKey, ManyToManyField
 
 class BaseFancy(object):
     def __init__(self, a_dict):
+        if a_dict is None: 
+            a_dict = {}
         self.__dict__ = dict_to_base_type(a_dict, self)
         #self.__dict__ = dict_to_base_type(a_dict, self, base_converter)
 

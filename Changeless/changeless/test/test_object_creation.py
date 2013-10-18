@@ -68,6 +68,12 @@ class TestFancy(unittest.TestCase):
         self.assertEqual(my_instance.thing_one.name, "one")
         self.assertEqual(my_instance.thing_one.attributes.test_attr, "two")
 
+    def test_fancy_hash_handles_none(self):
+        my_instance = FancyHash(None)
+        self.assertIsInstance(my_instance, BaseFancy)
+        self.assertIsInstance(my_instance, FancyHash)
+        self.assertEqual(my_instance.__dict__, {})
+
     def test_fancy_model_base_attributes_are_properites(self):
         fancy_model = types.create_fancy_model(User.objects.get(username="me"))
         self.assertEqual(fancy_model.username, "me")
@@ -124,6 +130,15 @@ class TestImmutable(unittest.TestCase):
         obj = ImmutableHash({'name': 'test_obj', 'attr1':'attr1_value'})
         with self.assertRaises(Exception) as cm:
             obj.name = "new name"
+    def test_immutable_has_takes_none(self):
+        obj = ImmutableHash(None)
+
+        '''checking inheritance'''
+        '''and terrible things don't happen during init'''
+        self.assertIsInstance(obj, BaseFancy)
+        self.assertIsInstance(obj, BaseImmutable)
+        self.assertIsInstance(obj, ImmutableHash)
+        self.assertEqual(obj.__dict__, {})
 
     #@reset_db
     def test_immutable_model_is_immutable_type(self):
