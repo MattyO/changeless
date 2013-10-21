@@ -8,7 +8,14 @@ def model_converter(base_type, a_model, depth=1):
     return base_type.__class__(temp_dict)
 
 def convert_list_to(the_list, base_type):
-    return [ base_type.__class__(an_item) for an_item in the_list ]
+    converted_list = []
+    for an_item in the_list:
+        if isinstance(an_item, dict):
+            converted_list.append(base_type.__class__(an_item))
+        else:
+            converted_list.append(an_item)
+
+    return converted_list 
 
 
 def dict_to_base_type(a_dict, base_type):

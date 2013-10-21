@@ -63,6 +63,17 @@ class TestFancy(unittest.TestCase):
         self.assertEqual(my_instance.a_list[0].name, "thing_three")
         self.assertEqual(my_instance.a_list[1].name, "thing_four")
 
+    def test_converts_list_of_non_dicts(self):
+        my_instance = FancyHash({"thing_one":"value one", "a_list":["one", "two", "three" ]} )
+
+        self.assertEqual(my_instance.a_list, ["one", "two", "three" ])
+
+    def test_converts_list_of_mixed_dicts(self):
+        my_instance = FancyHash({"thing_one":"value one", "a_list":["one", "two", {"name":"three"}]})
+
+        self.assertEqual(my_instance.a_list[0], "one")
+        self.assertEqual(my_instance.a_list[2].name, "three")
+
     def test_nested_dicts(self):
         my_instance = FancyHash({"thing_one":{"name":"one", "attributes":{"test_attr":"two"}}})
         self.assertEqual(my_instance.thing_one.name, "one")
